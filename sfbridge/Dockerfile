@@ -47,7 +47,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     util-linux \
   # Download and extract the MQ installation files
   && export DIR_EXTRACT=/tmp/mq \
-  && mkdir -p ${DIR_EXTRACT} \ 
+  && mkdir -p ${DIR_EXTRACT} \
   && cd ${DIR_EXTRACT} \
   && curl -LO $MQ_URL \
   && tar -zxvf ./*.tar.gz \
@@ -96,3 +96,50 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 ENV LANG=en_US.UTF-8
 
+#Create directory for MQ Salesforce bridge config files
+RUN mkdir /etc/mqm
+
+#Copy MQ Salesforce bridge configuration and run scripts
+COPY mqsf-configure-sfbridge.sh /usr/local/bin/mqsf-config
+COPY mqsf-run-sfbridge.sh /usr/local/bin/mqsf-run
+
+#Make executable
+RUN chmod u+x /usr/local/bin/mqsf-config
+RUN chmod u+x /usr/local/bin/mqsf-run
+
+#Assign build args for MQ Salesforce bridge configuration
+ARG runmqsfb_QueueManager
+ARG runmqsfb_MQBaseTopic
+ARG runmqsfb_MQChannel
+ARG runmqsfb_MQConname
+ARG runmqsfb_MQDLQname
+ARG runmqsfb_MQCCDTURL
+ARG runmqsfb_JndiClass
+ARG runmqsfb_JndiProvider
+ARG runmqsfb_MQUserName
+ARG runmqsfb_MQPassword
+ARG runmqsfb_SFUserName
+ARG runmqsfb_SFPassword
+ARG runmqsfb_SFToken
+ARG runmqsfb_SFEndpoint
+ARG runmqsfb_SFConsumerKey
+ARG runmqsfb_SFConsumerSecret
+ARG runmqsfb_KeyStoreFileName
+ARG runmqsfb_KeyStorePassword
+ARG runmqsfb_TrustedStoreFileName
+ARG runmqsfb_TrustedStorePassword:
+ARG runmqsfb_UseTLSforMQ
+ARG runmqsfb_PushTopics
+ARG runmqsfb_PlatformEvents
+ARG runmqsfb_MonitorInterval
+ARG runmqsfb_QoS
+ARG runmqsfb_MQSubscribe
+ARG runmqsfb_AppDataFormat
+ARG runmqsfb_StartupWait
+ARG runmqsfb_RuntimeLogFile
+
+#Configure template file for MQ Salesforce bridge
+RUN /usr/local/bin/mqsf-config
+
+#Set entrypoint for MQ Salesforce bridge runtime
+ENTRYPOINT ["mqsf-run"]

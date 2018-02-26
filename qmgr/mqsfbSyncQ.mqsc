@@ -1,0 +1,42 @@
+*  IBM MQ Support for Salesforce                                   */
+*   MQSC source defining queues needed to run the bridge program   */
+*                                                                  */
+*   <copyright                                                     */
+*   notice="lm-source-program"                                     */
+*   pids="5724-H72"                                                */
+*   years="2017"                                                   */
+*   crc="3612202781" >                                             */
+*   Licensed Materials - Property of IBM                           */
+*                                                                  */
+*   5724-H72                                                       */
+*                                                                  */
+*   (C) Copyright IBM Corp. 2017 All Rights Reserved.              */
+*                                                                  */
+*   US Government Users Restricted Rights - Use, duplication or    */
+*   disclosure restricted by GSA ADP Schedule Contract with        */
+*   IBM Corp.                                                      */
+*   </copyright>                                                   */
+*                                                                  */
+* This creates the syncq required for maintaining event state      */
+* across application or queue manager restarts.                    */
+*                                                                  */
+* The queue depth can be tiny as only a single message is expected */
+* on the queue. Only one instance of the bridge can run at a time  */
+* against this queue, so the default options are set for exclusive */
+* access.                                                          */
+*                                                                  */
+* The script also creates a further queue, used for errors         */
+* from MQ publications when creating Salesforce platform events.   */
+********************************************************************/
+DEFINE QLOCAL(SYSTEM.SALESFORCE.SYNCQ) +
+  DESCR('Queue holding state for MQ Bridge to Salesforce') +
+  DEFPSIST(YES) +
+  DEFSOPT(EXCL) +
+  NOSHARE       +
+  MAXDEPTH(4)   +
+  REPLACE
+
+DEFINE QLOCAL(SYSTEM.SALESFORCE.ERRORQ) +
+  DESCR('Queue for holding errors when creating platform events') +
+  PROPCTL(COMPAT) +
+  REPLACE
