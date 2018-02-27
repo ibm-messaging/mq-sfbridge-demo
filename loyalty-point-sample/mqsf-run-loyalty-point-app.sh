@@ -1,3 +1,4 @@
+#!/bin/bash
 # © Copyright IBM Corporation 2018
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,4 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-/opt/mqm/java/jre64/jre/bin/java -Djava.library.path=/opt/mqm/java/lib64 -cp /opt/mqm/java/lib/jms.jar:/opt/mqm/mqsf/prereqs/JSON4J.jar:/opt/mqm/java/lib/com.ibm.mqjms.jar:/tmp/LoyaltyPoint.jar com.ibm.mq.test.MQLoyaltyPointAppClient QM 1414 DEV.APP.SVRCONN /sf/event/# /sf/mqtosfb/event/HighPointsThreshold__e
+/opt/mqm/java/jre64/jre/bin/java -Djava.library.path=/opt/mqm/java/lib64 -cp /opt/mqm/java/lib/jms.jar:/opt/mqm/mqsf/prereqs/JSON4J.jar:/opt/mqm/java/lib/com.ibm.mqjms.jar:/tmp/LoyaltyPoint.jar com.ibm.mq.samples.loyaltypointclient.MQLoyaltyPointAppClientSample QM 1414 DEV.APP.SVRCONN /sf/event/# /sf/mqtosfb/event/HighPointsThreshold__e

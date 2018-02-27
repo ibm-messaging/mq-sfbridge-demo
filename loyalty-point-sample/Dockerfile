@@ -96,13 +96,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 
 ENV LANG=en_US.UTF-8
 
-#Create directory for MQ Salesforce bridge config files
-RUN mkdir /etc/mqm
-
-#Copy MQ Salesforce bridge configuration and run scripts
-COPY mqsf-configure-loyalty-point-app.sh /usr/local/bin/mqsf-configure-loyalty-point-app
-RUN chmod u+x /usr/local/bin/mqsf-configure-loyalty-point-app
+#Copy LoyaltyPoint application sample jar and run
+COPY mqsf-run-loyalty-point-app.sh /usr/local/bin/mqsf-run-loyalty-point-app
+RUN chmod u+x /usr/local/bin/mqsf-run-loyalty-point-app
 COPY LoyaltyPoint.jar /tmp
-COPY runLoyaltyPointApp.sh /tmp
-RUN chmod u+x /tmp/runLoyaltyPointApp.sh
-ENTRYPOINT ["mqsf-configure-loyalty-point-app"]
+ENTRYPOINT ["mqsf-run-loyalty-point-app"]
